@@ -142,9 +142,9 @@ footer { border-top: 1px solid var(--line); padding-block: 1.6rem; color: var(--
 <body>
 
 <div class="bar"><nav aria-label="Sections">
-  <a href="#lifecycle">Lifecycle</a><a href="#gates">Gates</a><a href="#roles">Roles</a><a href="#documents">Documents</a>
+  <a href="#agentic">Agentic SDLC</a><a href="#lifecycle">Lifecycle</a><a href="#gates">Gates</a><a href="#roles">Roles</a><a href="#documents">Documents</a>
   <a href="#standards">Standards</a><a href="#guardrails">Guardrails</a><a href="#compliance">Compliance</a>
-  <a href="#paths">Your path</a><a href="#run">Run it</a>
+  <a href="#alignment">Alignments</a><a href="#paths">Your path</a><a href="#run">Run it</a>
 </nav></div>
 
 <div class="wrap">
@@ -169,6 +169,38 @@ footer { border-top: 1px solid var(--line); padding-block: 1.6rem; color: var(--
   </div>
 </section>
 
+<section id="agentic">
+  <h2>How an agentic SDLC works</h2>
+  <p class="intro">An agentic lifecycle keeps the familiar phases of software delivery (planning, analysis, design, implementation, testing, deployment, maintenance). What changes is who does the first draft: role-specific AI agents produce the documents, code and tests, while people keep the decisions. Every phase follows the same loop.</p>
+  <ol class="flow" aria-label="The loop every phase follows">
+    <li><div class="ph"><b>Agent drafts</b><span>document, code, tests</span></div></li>
+    <li><div class="ph"><b>Pipeline measures</b><span>tests, scans, checks</span></div></li>
+    <li><div class="ph"><b>Reviewer challenges</b><span>independent agent</span></div></li>
+    <li><div class="ph"><b>Person decides</b><span>approve or reject</span></div><span class="gt">Gate</span></li>
+    <li><div class="ph"><b>Evidence kept</b><span>audit log, documents</span></div></li>
+  </ol>
+  <p class="loop-note">If the measurement or the review fails, the work goes back to the agent with the feedback, up to a set number of rounds. If a person rejects it, the pipeline stops and records why. Nothing moves to the next phase without the previous gate approved.</p>
+
+  <h3>The seven classic phases, and where each happens here</h3>
+  <div class="tbl"><table>
+    <thead><tr><th>Phase</th><th>What the agents do</th><th>What people decide</th><th>In this playbook</th></tr></thead>
+    <tbody>
+      <tr><td><b>1 · Planning</b></td><td>Product manager agent drafts the charter, scope and resource bounds, then slices the work into milestones by feature across every repository, with a dependency graph.</td><td>Sponsor accepts the charter; tech lead and scrum master accept the plan.</td><td><span class="tag">pre_flight</span><span class="tag">plan</span><span class="tag g">G0</span><span class="tag g">G3</span></td></tr>
+      <tr><td><b>2 · Analysis</b></td><td>Business analyst agent turns the brief (or an imported BRD) into user stories with acceptance criteria, a traceability matrix and a Definition of Ready.</td><td>Product owner confirms the requirements are right and ready to build.</td><td><span class="tag">research</span><span class="tag g">G1</span></td></tr>
+      <tr><td><b>3 · Design</b></td><td>Tech lead agent writes the API contract, one decision record per significant choice, and a STRIDE threat model. A later check compares the code against those decisions.</td><td>Principal architect approves the architecture and the threat model.</td><td><span class="tag">architecture</span><span class="tag g">G2</span></td></tr>
+      <tr><td><b>4 · Implementation</b></td><td>Engineer agents (backend, web, mobile) write failing tests first, then the code, one repository at a time, on a branch per story. They cannot run Git; the pipeline commits and opens the pull request.</td><td>Tech lead approves the merge of each story.</td><td><span class="tag">implement</span><span class="tag g">G4</span></td>/tr>
+      <tr><td><b>5 · Testing</b></td><td>The pipeline runs unit tests, coverage, static analysis and dependency scans itself. A QA agent tests the API contract across repositories. An independent adversarial reviewer tries to disprove the work.</td><td>Tech lead accepts a clean review (G4); QA lead accepts staging results (G5).</td><td><span class="tag">integration_test</span><span class="tag">parallel_review</span><span class="tag g">G4</span><span class="tag g">G5</span></td></tr>
+      <tr><td><b>6 · Deployment</b></td><td>DevOps and SRE agents validate infrastructure as code, record staging smoke tests and rollback, and write the production plan: SLOs, runbook, canary steps, numeric rollback criteria.</td><td>QA lead (staging), DBA (migrations), release manager and product owner (go-live).</td><td><span class="tag">staging_deploy</span><span class="tag">release_prep</span><span class="tag">production_deploy</span><span class="tag g">G5</span><span class="tag g">G8</span></td></tr>
+      <tr><td><b>7 · Maintenance</b></td><td>The vulnerability register tracks each finding to a due date, an owner and a verified fix. Dependency and security checks run on every pull request. Fixes and changes re-enter as new stories through the same gates. The release runbook and handover notes carry the operating knowledge.</td><td>Who accepts a risk that has no fix; who releases a blocked story.</td><td><span class="tag">handover</span><span class="tag g">GH</span><span class="tag g">G6</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="three">
+    <div class="card"><h3>What the agents are good at</h3><p>First drafts at speed and in volume: stories, contracts, tests, code, runbooks and changelogs, and reading a large codebase to check a boundary. Consistency: every story follows the same template and standards.</p></div>
+    <div class="card"><h3>What stays with people</h3><p>Deciding what to build, accepting architecture and risk, approving each merge and release, and the final go-live. People review a short list of linked documents on a GitHub issue, not the whole code base.</p></div>
+    <div class="card"><h3>What the machine proves</h3><p>Whether tests pass, how much is covered, which findings and vulnerable dependencies exist, who approved what and when. These come from tool output, not from what an agent says about its own work.</p></div>
+  </div>
+</section>
 <section id="lifecycle">
   <h2>The lifecycle</h2>
   <p class="intro">Orange markers are human gates. A dashed marker applies only in some cases. Work moves forward only when every earlier gate is approved.</p>
@@ -388,6 +420,29 @@ footer { border-top: 1px solid var(--line); padding-block: 1.6rem; color: var(--
     <div class="card"><h3>Retention</h3><p>Evidence is committed to the state branch at every gate and published as a workflow artifact kept for a configurable number of days (365 by default). The index lists every file with its SHA-256 and is sealed with an HMAC when an integrity key is set.</p></div>
   </div>
   <div class="note">This evidence supports an audit. It does not by itself certify compliance with any named framework.</div>
+</section>
+
+<section id="alignment">
+  <h2>How it aligns with standards and reference practice</h2>
+  <p class="intro">This section maps the playbook to widely used standards and to practices published by large technology companies. The mapping shows where the playbook produces evidence that supports an organisation's own claims.</p>
+
+  <div class="tbl"><table>
+    <thead><tr><th>Reference</th><th>How the playbook lines up</th><th>Fit</th></tr></thead>
+    <tbody>
+      <tr><td><b>NIST SSDF</b><br><span class="mono">SP 800-218 v1.1</span></td><td><b>PW</b> produce well-secured software: threat model (PW.1), secure coding standard (PW.5), code review and static analysis (PW.7), testing (PW.8), third-party component checks (PW.4). <b>PS</b> protect the software: pull-request-only changes and branch protection (PS.1), archived SBOMs (PS.3). <b>RV</b> respond to vulnerabilities: scan, register, due dates, verified fixes (RV.1, RV.2).</td><td><span class="tag ok">Strong</span></td></tr>
+      <tr><td><b>ISO/IEC 27001:2022</b><br><span class="mono">Annex A</span></td><td>Evidence for secure development life cycle (8.25), application security requirements (8.26), secure architecture (8.27), secure coding (8.28), security testing (8.29), change management (8.32), technical vulnerabilities (8.8), access to source code (8.4).</td><td><span class="tag pt">Supports evidence</span></td></tr>
+      <tr><td><b>SOC 2</b><br><span class="mono">Trust Services Criteria</span></td><td>Change management (CC8.1): each change is authorised, tested, approved and recorded. Vulnerability detection and response (CC7.1). Logical access to code (CC6.1) through role-scoped agents and team-checked approvals.</td><td><span class="tag pt">Supports evidence</span></td></tr>
+      <tr><td><b>ISO/IEC/IEEE 12207</b><br><span class="mono">Software life cycle processes</span></td><td>Requirements definition, architecture and design definition, implementation, integration, verification, validation and transition each have a phase, an owner role and a document.</td><td><span class="tag pt">Partial</span></td></tr>
+      <tr><td><b>OWASP SAMM v2</b></td><td>Design (threat assessment, security architecture), Implementation (secure build, defect management), Verification (architecture assessment, requirements-driven and security testing).</td><td><span class="tag pt">Partial</span></td></tr>
+      <tr><td><b>Microsoft SDL</b></td><td>Security requirements, threat modelling at design, static analysis with approved tools, a final security review before release (G6), a release and rollback plan.</td><td><span class="tag pt">Partial</span></td></tr>
+      <tr><td><b>Google SRE and DORA research</b><br><b>AWS Well-Architected</b></td><td>SLOs with symptom-based alerts, canary-first rollout, numeric rollback criteria, reversible deploys, blameless reviews of findings. The audit data (quality-gate history, deployment history) is the raw material for DORA's four delivery metrics.</td><td><span class="tag pt">Partial</span></td></tr>
+      <tr><td><b>OWASP MASVS</b><br><span class="mono">mobile</span></td><td>The mobile standard follows its themes: secure storage in the platform keystore, TLS only, minimum permissions, validated deep links.</td><td><span class="tag no">Informed by</span></td></tr>
+      <tr><td><b>NIST AI RMF 1.0</b><br><b>ISO/IEC 42001</b></td><td>Human oversight of AI output at every gate, role limits on what an agent can touch, a tamper-evident log of what each agent did.</td><td><span class="tag no">Supports evidence</span></td></tr>
+      <tr><td><b>Sector and product rules</b><br><span class="mono">PCI DSS v4.0 req. 6, EU Cyber Resilience Act</span></td><td>Evidence for secure development, vulnerability handling, change control and a software bill of materials.</td><td><span class="tag no">Supports evidence</span></td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Fit labels:</b> <span class="tag ok">Strong</span> most practices in the framework have a matching control here. <span class="tag pt">Partial</span> a meaningful share is covered and the gaps are listed. <span class="tag pt">Supports evidence</span> the playbook produces records an auditor can use, but the framework is certified at organisation level. <span class="tag no">Informed by</span> shaped by it, not tested against it.</p>
+
 </section>
 
 <section id="paths">
